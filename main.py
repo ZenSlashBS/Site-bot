@@ -1,9 +1,9 @@
 # main.py
 import os
 import threading
-from bot import bot
+from bot import bot, MAIN_ADMIN
 from app import app
-from db import init_db, add_admin, MAIN_ADMIN
+from db import init_db, add_admin
 
 init_db()
 
