@@ -13,7 +13,7 @@ def init_db():
                   title TEXT NOT NULL,
                   bio TEXT NOT NULL,
                   price REAL NOT NULL,
-                  image_url TEXT NOT NULL,
+                  image_path TEXT NOT NULL,
                   category_id INTEGER NOT NULL,
                   created_at TEXT NOT NULL,
                   discount_percent REAL DEFAULT 0,
@@ -40,13 +40,13 @@ def get_categories():
     conn.close()
     return cats
 
-def add_product(title, bio, price, image_url, category_id, discount_percent, is_trending):
+def add_product(title, bio, price, image_path, category_id, discount_percent, is_trending):
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
     created_at = datetime.now().isoformat()
-    c.execute("""INSERT INTO products (title, bio, price, image_url, category_id, created_at, discount_percent, is_trending)
+    c.execute("""INSERT INTO products (title, bio, price, image_path, category_id, created_at, discount_percent, is_trending)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-              (title, bio, price, image_url, category_id, created_at, discount_percent, is_trending))
+              (title, bio, price, image_path, category_id, created_at, discount_percent, is_trending))
     conn.commit()
     conn.close()
 
@@ -60,4 +60,4 @@ def get_products():
     conn.close()
     return products
 
-# Add more functions if needed for edit/delete
+# For edit/delete, add functions if implementing
