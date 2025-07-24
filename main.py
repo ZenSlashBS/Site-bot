@@ -7,7 +7,8 @@ from db import init_db
 
 init_db()
 
-threading.Thread(target=run_bot, daemon=True).start()
+bot_thread = threading.Thread(target=run_bot, daemon=True)
+bot_thread.start()
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
