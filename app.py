@@ -1,10 +1,21 @@
 # app.py
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, Response
 from db import get_products, init_db
 from datetime import datetime, timedelta
 import os
+import requests
 
 app = Flask(__name__)
+TOKEN = os.environ['BOT_TOKEN']
+
+@app.route('/image/<path:path>')
+def serve_image(path):
+    url = f"https://api.telegram.org/file/bot{TOKEN}/{path}"
+    resp = requests.get(url, stream=True)
+    if resp.status_code == 200:
+        return Response(resp.iter_content(chunk_size=10*1024), content_type=resp.headers['Content-Type'])
+    else:
+        return "Image not found", 404
 
 @app.route('/')
 def index():
@@ -21,7 +32,7 @@ def index():
             'title': p[1],
             'bio': p[2],
             'price': p[3],
-            'image_url': p[4],
+            'image_path': p[4],
             'discount_percent': p[7],
             'is_trending': p[8],
             'is_new': is_new
@@ -39,11 +50,11 @@ HTML_TEMPLATE = '''
     <style>
         body { background-color: #0f0f0f; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; }
         h1 { text-align: center; color: #00ff00; }
-        .category { margin-bottom: 40px; }
-        .category-name { font-size: 24px; color: #00ffff; position: sticky; left: 0; background: #0f0f0f; padding: 10px; width: 200px; display: inline-block; vertical-align: top; }
-        .carousel { display: flex; overflow-x: auto; scrollbar-width: none; }
+        .category { margin-bottom: 40px; display: flex; }
+        .category-name { font-size: 24px; color: #00ffff; position: sticky; left: 0; background: #0f0f0f; padding: 10px; width: 200px; min-width: 200px; display: inline-block; vertical-align: top; }
+        .carousel { display: flex; overflow-x: auto; scrollbar-width: none; flex: 1; }
         .carousel::-webkit-scrollbar { display: none; }
-        .card { min-width: 250px; margin: 10px; background: #1f1f1f; border-radius: 10px; padding: 10px; text-align: center; position: relative; transition: transform 0.3s; }
+        .card { min-width: 250px; margin: 10px; background: #1f1f1f; border-radius: 10px; padding: 10px; text-align: center; position: relative; transition: transform 0.3s; cursor: pointer; }
         .card:hover { transform: scale(1.05); }
         .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
         .title { font-size: 18px; font-weight: bold; }
@@ -59,18 +70,20 @@ HTML_TEMPLATE = '''
         .modal-content { background-color: #1f1f1f; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; }
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
         .close:hover { color: #fff; cursor: pointer; }
-        .no-products { text-align: center; color: #aaa; }
+        .no-products { text-align: center; color: #aaa; flex: 1; }
     </style>
 </head>
 <body>
     <h1>Marketplace</h1>
+    {% if grouped %}
     {% for cat, prods in grouped.items() %}
     <div class="category">
         <div class="category-name">{{ cat }}</div>
+        {% if prods %}
         <div class="carousel">
             {% for prod in prods %}
-            <div class="card" onclick="openModal('{{ prod.id }}')">
-                <img src="{{ prod.image_url }}" alt="{{ prod.title }}">
+            <div class="card" onclick="event.target.closest('.card').querySelector('.purchase') !== event.target && openModal('{{ prod.id }}')">
+                <img src="/image/{{ prod.image_path }}" alt="{{ prod.title }}">
                 <div class="title">{{ prod.title }}</div>
                 <div class="bio">{{ prod.bio[:100] }}{% if prod.bio|length > 100 %}...{% endif %}</div>
                 <div class="price">${{ "%.2f" % prod.price }}</div>
@@ -87,23 +100,28 @@ HTML_TEMPLATE = '''
             </div>
             {% endfor %}
         </div>
-        {% if not prods %}
+        {% else %}
         <div class="no-products">No products available yet.</div>
         {% endif %}
     </div>
     {% endfor %}
+    {% else %}
+    <div class="no-products">No products available yet.</div>
+    {% endif %}
     <!-- Modals -->
-    {% for prod in grouped.values() | flatten %}
+    {% for cat, prods in grouped.items() %}
+    {% for prod in prods %}
     <div id="modal-{{ prod.id }}" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('{{ prod.id }}')">&times;</span>
+            <span class="close" onclick="closeModal('{{ prod.id }}')">×</span>
             <h2>{{ prod.title }}</h2>
-            <img src="{{ prod.image_url }}" style="width:100%;">
+            <img src="/image/{{ prod.image_path }}" style="width:100%;">
             <p>{{ prod.bio }}</p>
             <div class="price">${{ "%.2f" % prod.price }}</div>
             <a class="purchase" href="https://t.me/philoxnex?text=Hi%20Im%20interested%20to%20buy%20{{ prod.title | urlencode }}">Purchase</a>
         </div>
     </div>
+    {% endfor %}
     {% endfor %}
     <script>
         function openModal(id) {
