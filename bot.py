@@ -4,9 +4,9 @@ import os
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ForceReply
 from db import add_category, get_categories, add_product
 
-TOKEN = os.environ['8249485083:AAFNoFTh4vIq25eMXdNbiCq2_WIKqbt7MNM']
-ADMIN_ID = 7451959845  # int(os.environ['ADMIN_ID'])
-CHANNEL_ID = -1002756865313  # int(os.environ['CHANNEL_ID'])
+TOKEN = os.environ['BOT_TOKEN']
+ADMIN_ID = int(os.environ['ADMIN_ID'])
+CHANNEL_ID = int(os.environ['CHANNEL_ID'])
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -46,7 +46,7 @@ def handle_steps(message):
     if uid not in user_states:
         return
     state = user_states[uid]['state']
-    data = user_states[uid]['data']
+    data = user_states[uid].get('data', {})
 
     if state == 'new_category':
         name = message.text.strip()
@@ -110,8 +110,8 @@ def handle_steps(message):
             sent_msg = bot.send_photo(CHANNEL_ID, file_id)
             # Get file info
             file_info = bot.get_file(file_id)
-            image_url = f"https://api.telegram.org/file/bot{TOKEN}/{file_info.file_path}"
-            data['image_url'] = image_url
+            image_path = file_info.file_path
+            data['image_path'] = image_path
             # Now tags
             markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add("Discount", "Trending", "Both", "None")
@@ -133,7 +133,7 @@ def handle_steps(message):
         elif text == 'Trending':
             trending = 1
         # Save
-        add_product(data['title'], data['bio'], data['price'], data['image_url'], data['category_id'], discount, trending)
+        add_product(data['title'], data['bio'], data['price'], data['image_path'], data['category_id'], discount, trending)
         bot.reply_to(message, "Product added!")
         del user_states[uid]
         return
@@ -142,7 +142,7 @@ def handle_steps(message):
         try:
             discount = float(message.text.strip())
             trending = user_states[uid]['temp']['trending']
-            add_product(data['title'], data['bio'], data['price'], data['image_url'], data['category_id'], discount, trending)
+            add_product(data['title'], data['bio'], data['price'], data['image_path'], data['category_id'], discount, trending)
             bot.reply_to(message, "Product added!")
             del user_states[uid]
         except:
@@ -151,5 +151,3 @@ def handle_steps(message):
 
 def run_bot():
     bot.infinity_polling()
-
-# For edit/delete, can add later
