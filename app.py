@@ -1,12 +1,22 @@
 # app.py
-from flask import Flask, render_template_string, Response
+from flask import Flask, render_template_string, request, Response
 from db import get_products, init_db
 from datetime import datetime, timedelta
+from bot import bot, TOKEN
 import os
 import requests
 
 app = Flask(__name__)
-TOKEN = os.environ['BOT_TOKEN']
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    if request.headers.get('content-type') == 'application/json':
+        json_string = request.get_data().decode('utf-8')
+        update = telebot.types.Update.de_json(json_string)
+        bot.process_new_updates([update])
+        return 'OK', 200
+    else:
+        return 'Unauthorized', 403
 
 @app.route('/image/<path:path>')
 def serve_image(path):
