@@ -3,9 +3,12 @@ import os
 import threading
 from bot import bot
 from app import app
-from db import init_db
+from db import init_db, add_admin, MAIN_ADMIN
 
 init_db()
+
+# Add main admin if not exists
+add_admin(MAIN_ADMIN)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
@@ -14,7 +17,6 @@ if __name__ == '__main__':
         bot.remove_webhook()
         bot.set_webhook(url=app_url + '/webhook')
     else:
-        # Local development: use polling
         threading.Thread(target=bot.infinity_polling, daemon=True).start()
 
     app.run(host='0.0.0.0', port=port, debug=False)
