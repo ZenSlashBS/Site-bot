@@ -1,4 +1,5 @@
 # bot.py
+# (remove run_bot, just define bot and handlers)
 import telebot
 import os
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ForceReply
@@ -46,7 +47,7 @@ def handle_steps(message):
     if uid not in user_states:
         return
     state = user_states[uid]['state']
-    data = user_states[uid].get('data', {})
+    data = user_states[uid]['data']
 
     if state == 'new_category':
         name = message.text.strip()
@@ -110,8 +111,7 @@ def handle_steps(message):
             sent_msg = bot.send_photo(CHANNEL_ID, file_id)
             # Get file info
             file_info = bot.get_file(file_id)
-            image_path = file_info.file_path
-            data['image_path'] = image_path
+            data['image_path'] = file_info.file_path
             # Now tags
             markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add("Discount", "Trending", "Both", "None")
@@ -148,6 +148,3 @@ def handle_steps(message):
         except:
             bot.reply_to(message, "Invalid number.")
         return
-
-def run_bot():
-    bot.infinity_polling()
