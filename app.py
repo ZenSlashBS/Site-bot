@@ -118,7 +118,7 @@ HTML_TEMPLATE = '''
     .title {font-size:18px;font-weight:bold;margin-top:10px;}
     .bio {font-size:14px;white-space:pre-wrap;overflow:hidden;text-overflow:ellipsis;max-height:60px;}
     .price {font-size:16px;color:#00ff00;margin-bottom:0;}
-    .badges {position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;}
+    .badges {position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:1;}
     .badge {padding:5px 10px;border-radius:5px;font-size:12px;color:#fff;}
     .discount {background:#e74c3c;}
     .new {background:#2ecc71;}
@@ -133,6 +133,8 @@ HTML_TEMPLATE = '''
     .close {position:absolute;top:15px;right:20px;font-size:28px;color:#aaa;cursor:pointer;}
     .close:hover{color:#fff;}
     .no-products {text-align:center;color:#aaa;padding:40px 0;}
+    .modal .image-container {position:relative;}
+    .modal .badges {position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:1;}
   </style>
 </head>
 <body>
@@ -192,15 +194,15 @@ HTML_TEMPLATE = '''
       <div id="modal-{{ prod.id }}" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal('{{ prod.id }}')">×</span>
-          <div class="badges">
-            {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
-            {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
-            {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
-          </div>
           <h2>{{ prod.title }}</h2>
           <div class="image-container">
             <img src="{{ prod.image_path }}"
                  style="{% if cat=='Creators' %}border-radius:50%;max-width:200px;height:200px;display:block;margin:0 auto;{% endif %}width:100%;">
+            <div class="badges">
+              {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
+              {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
+              {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
+            </div>
           </div>
           <div class="modal-body">
             <p>{{ prod.bio }}</p>
