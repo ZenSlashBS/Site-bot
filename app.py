@@ -19,15 +19,6 @@ def webhook():
     else:
         return 'Unauthorized', 403
 
-@app.route('/image/<path:path>')
-def serve_image(path):
-    url = f"https://api.telegram.org/file/bot{TOKEN}/{path}"
-    resp = requests.get(url, stream=True)
-    if resp.status_code == 200:
-        return Response(resp.iter_content(chunk_size=10*1024), content_type=resp.headers['Content-Type'])
-    else:
-        return "Image not found", 404
-
 @app.route('/')
 def index():
     init_db()  # Ensure DB exists
@@ -94,7 +85,7 @@ HTML_TEMPLATE = '''
         <div class="carousel">
             {% for prod in prods %}
             <div class="card" onclick="event.target.closest('.card').querySelector('.purchase') !== event.target && openModal('{{ prod.id }}')">
-                <img src="/image/{{ prod.image_path }}" alt="{{ prod.title }}">
+                <img src="{{ prod.image_path }}" alt="{{ prod.title }}">
                 <div class="title">{{ prod.title }}</div>
                 <div class="bio">{{ prod.bio[:100] }}{% if prod.bio|length > 100 %}...{% endif %}</div>
                 <div class="price">${{ "%.2f" % prod.price }}</div>
@@ -126,7 +117,7 @@ HTML_TEMPLATE = '''
         <div class="modal-content">
             <span class="close" onclick="closeModal('{{ prod.id }}')">×</span>
             <h2>{{ prod.title }}</h2>
-            <img src="/image/{{ prod.image_path }}" style="width:100%;">
+            <img src="{{ prod.image_path }}" style="width:100%;">
             <p>{{ prod.bio }}</p>
             <div class="price">${{ "%.2f" % prod.price }}</div>
             <a class="purchase" href="https://t.me/philoxnex?text=Hi%20Im%20interested%20to%20buy%20{{ prod.title | urlencode }}">Purchase</a>
