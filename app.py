@@ -58,13 +58,12 @@ HTML_TEMPLATE = '''
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Aarav's Marketplace</title>
   <link rel="icon" href="https://iili.io/FkCxdk7.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #0f0f0f;
       color: #fff;
-      font-family: 'Orbitron',sans-serif;
+      font-family: 'Roboto',sans-serif;
       margin:0; padding:0;
       background-attachment:fixed;
       background-size:cover;
@@ -107,20 +106,16 @@ HTML_TEMPLATE = '''
     .logo-text {font-size:24px;color:#00ff00;text-shadow:0 0 10px #00ff00;animation:glow 2s ease infinite;}
     @keyframes glow {0%{text-shadow:0 0 5px #00ff00;}50%{text-shadow:0 0 15px #00ff00;}100%{text-shadow:0 0 5px #00ff00;}}
     .hero {text-align:center;padding:50px;background:rgba(15,15,15,0.7);backdrop-filter:blur(10px);margin:20px;border-radius:20px;}
-    .category-name {font-size:20px;color:#f5f5f5;background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;display:inline-block;margin-bottom:15px;text-shadow:0 0 5px #00ff00;}
+    .category-name {font-size:20px;color:#f5f5f5;background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;display:inline-block;margin-bottom:15px;}
     .category {margin-bottom:40px;display:block;padding:20px;}
     .carousel {display:flex;overflow-x:auto;scrollbar-width:none;}
     .carousel::-webkit-scrollbar{display:none;}
-    .card {min-width:250px;margin:10px;background:rgba(31,31,31,0.7);backdrop-filter:blur(10px);border-radius:10px;padding:10px;text-align:center;position:relative;transition:transform .3s;cursor:pointer;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,0.1);box-shadow:0 0 15px rgba(0,255,0,0.3);}
-    .card:hover {transform:scale(1.05);box-shadow:0 0 30px rgba(0,255,0,0.6);}
-    .image-container {position:relative;perspective:1000px;}
-    .card-inner {transition:transform 0.6s;transform-style:preserve-3d;}
-    .card:hover .card-inner {transform:rotateY(180deg);}
-    .card-front, .card-back {backface-visibility:hidden;position:absolute;top:0;left:0;width:100%;height:100%;}
-    .card-back {transform:rotateY(180deg);display:flex;align-items:center;justify-content:center;padding:10px;}
+    .card {min-width:250px;margin:10px;background:rgba(31,31,31,0.7);backdrop-filter:blur(10px);border-radius:10px;padding:10px;text-align:center;position:relative;transition:transform .3s;cursor:pointer;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,0.1);}
+    .card:hover {transform:scale(1.05);box-shadow:0 0 20px rgba(0,255,0,0.3);}
+    .image-container {position:relative;}
     .card img {width:100%;height:200px;object-fit:cover;border-radius:10px;}
     .creators .card img {border-radius:50%;width:200px;height:200px;margin:0 auto;}
-    .title {font-size:18px;font-weight:bold;margin-top:10px;text-shadow:0 0 5px #00ff00;}
+    .title {font-size:18px;font-weight:bold;margin-top:10px;}
     .bio {font-size:14px;white-space:pre-wrap;overflow:hidden;text-overflow:ellipsis;max-height:60px;}
     .price {font-size:16px;color:#00ff00;margin-bottom:0;}
     .badges {position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:1;}
@@ -140,20 +135,6 @@ HTML_TEMPLATE = '''
     .no-products {text-align:center;color:#aaa;padding:40px 0;}
     .modal .image-container {position:relative;}
     .modal .badges {position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;z-index:1;}
-    .card img:hover {animation:glitch 0.5s infinite;}
-    @keyframes glitch {
-      0% {transform:translate(0);}
-      20% {transform:translate(-2px,2px);}
-      40% {transform:translate(2px,-2px);}
-      60% {transform:translate(-2px,2px);}
-      80% {transform:translate(2px,-2px);}
-      100% {transform:translate(0);}
-    }
-    .light-mode {background:#fff;color:#000;/* adjust other colors */}
-    @media (max-width:768px) {
-      .carousel {flex-direction:column;}
-      .card {min-width:90%;}
-    }
   </style>
 </head>
 <body>
@@ -164,15 +145,14 @@ HTML_TEMPLATE = '''
       <span class="logo-text">Aarav's Marketplace</span>
     </div>
   </header>
-  <button onclick="toggleTheme()">Toggle Theme</button>
-  <section class="hero" style="background-position-y:0px;">
+  <section class="hero">
     <h1>Marketplace For The Pro Crackers</h1>
     <p>Discover And Get The Tool U Need For The Ultimate Hacking Experience.</p>
   </section>
 
   {% for cat in categories %}
     {% set prods = grouped.get(cat, []) %}
-    <div class="category animate__animated animate__fadeIn {% if cat=='Creators' %} creators{% endif %}">
+    <div class="category{% if cat=='Creators' %} creators{% endif %}">
       <div class="category-name">{{ cat }}</div>
       {% if prods %}
         <div class="carousel">
@@ -180,14 +160,7 @@ HTML_TEMPLATE = '''
             <div class="card"
                  onclick="event.target.closest('.card').querySelector('.purchase')!==event.target&&openModal('{{ prod.id }}')">
               <div class="image-container">
-                <div class="card-inner">
-                  <div class="card-front">
-                    <img src="{{ prod.image_path }}" alt="{{ prod.title }}" loading="lazy">
-                  </div>
-                  <div class="card-back">
-                    <p>{{ prod.bio }}</p>
-                  </div>
-                </div>
+                <img src="{{ prod.image_path }}" alt="{{ prod.title }}">
                 <div class="badges">
                   {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
                   {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
@@ -221,15 +194,15 @@ HTML_TEMPLATE = '''
       <div id="modal-{{ prod.id }}" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal('{{ prod.id }}')">×</span>
-          <div class="badges">
-            {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
-            {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
-            {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
-          </div>
           <h2>{{ prod.title }}</h2>
           <div class="image-container">
             <img src="{{ prod.image_path }}"
                  style="{% if cat=='Creators' %}border-radius:50%;max-width:200px;height:200px;display:block;margin:0 auto;{% endif %}width:100%;">
+            <div class="badges">
+              {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
+              {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
+              {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
+            </div>
           </div>
           <div class="modal-body">
             <p>{{ prod.bio }}</p>
@@ -273,23 +246,7 @@ HTML_TEMPLATE = '''
       setTimeout(() => s.remove(), 3000);
     }
     setInterval(createSparkle, 200);
-
-    function burstSparkles(count = 10) {
-      for (let i = 0; i < count; i++) {
-        setTimeout(createSparkle, i * 50);
-      }
-    }
-    window.addEventListener('load', burstSparkles);
-    document.querySelector('.tube-light').addEventListener('mouseover', () => burstSparkles(5));
-
-    window.addEventListener('scroll', () => {
-      document.querySelector('.hero').style.backgroundPositionY = (window.scrollY * 0.5) + 'px';
-    });
-
-    function toggleTheme() {
-      document.body.classList.toggle('light-mode');
-    }
-  </style>
+  </script>
 </body>
 </html>
 '''
