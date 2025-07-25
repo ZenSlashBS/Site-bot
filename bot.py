@@ -104,10 +104,17 @@ def handle_steps(message):
         image_url = message.text.strip()
         if image_url.startswith('http') and (image_url.endswith('.jpg') or image_url.endswith('.png') or image_url.endswith('.gif')):
             data['image_path'] = image_url
-            markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-            markup.add("Discount", "Trending", "Both", "None")
-            bot.reply_to(message, "Select tags:", reply_markup=markup)
-            user_states[uid]['state'] = 'add_tags'
+            if data.get('is_creators', False):
+                price = data.get('price', 0)
+                contact_link = data.get('contact_link', None)
+                add_product(data['title'], data['bio'], price, data['image_path'], data['category_id'], 0, 0, uid, contact_link)
+                bot.reply_to(message, "✅ Creator added!")
+                del user_states[uid]
+            else:
+                markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+                markup.add("Discount", "Trending", "Both", "None")
+                bot.reply_to(message, "Select tags:", reply_markup=markup)
+                user_states[uid]['state'] = 'add_tags'
         else:
             bot.reply_to(message, "❌ Invalid image URL. Please enter a valid link ending with .jpg, .png, etc.")
         return
