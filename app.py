@@ -65,7 +65,7 @@ HTML_TEMPLATE = '''
         .bio { font-size: 14px; white-space: pre-wrap; overflow: hidden; text-overflow: ellipsis; max-height: 60px; }
         .price { font-size: 16px; color: #00ff00; }
         .badges { position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; }
-        .badge { padding: 5px; border-radius: 5px; font-size: 12px; }
+        .badge { padding: 5px 10px; border-radius: 5px; font-size: 12px; width: fit-content; }
         .discount { background: red; }
         .new { background: green; }
         .trending { background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet); background-size: 400% 400%; animation: rainbow 5s ease infinite; color: #fff; }
@@ -76,7 +76,7 @@ HTML_TEMPLATE = '''
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
         .close:hover { color: #fff; cursor: pointer; }
         .no-products { text-align: center; color: #aaa; flex: 1; }
-        .modal-content .badges { position: relative; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 10px; }
+        .modal-content .badges { position: relative; display: flex; flex-direction: row; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
