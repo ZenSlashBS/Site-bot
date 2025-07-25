@@ -51,6 +51,7 @@ def handle_steps(message):
             num = int(text.split('.')[0])
             if 1 <= num <= len(cats):
                 data['category_id'] = cats[num-1][0]
+                data['is_creators'] = cats[num-1][1] == 'Creators'
                 bot.reply_to(message, "Enter product title:", reply_markup=ForceReply())
                 user_states[uid]['state'] = 'add_title'
             else:
@@ -63,6 +64,7 @@ def handle_steps(message):
         name = message.text.strip()
         cat_id = add_category(name, uid)
         data['category_id'] = cat_id
+        data['is_creators'] = name == 'Creators'
         bot.reply_to(message, "Enter product title:", reply_markup=ForceReply())
         user_states[uid]['state'] = 'add_title'
         return
@@ -75,8 +77,18 @@ def handle_steps(message):
 
     if state == 'add_bio':
         data['bio'] = message.text.strip()
-        bot.reply_to(message, "Enter price (number):", reply_markup=ForceReply())
-        user_states[uid]['state'] = 'add_price'
+        if data.get('is_creators', False):
+            bot.reply_to(message, "Enter contact link:", reply_markup=ForceReply())
+            user_states[uid]['state'] = 'add_contact'
+        else:
+            bot.reply_to(message, "Enter price (number):", reply_markup=ForceReply())
+            user_states[uid]['state'] = 'add_price'
+        return
+
+    if state == 'add_contact':
+        data['contact_link'] = message.text.strip()
+        bot.reply_to(message, "Enter image URL (e.g., https://iili.io/Fkf90xe.jpg):", reply_markup=ForceReply())
+        user_states[uid]['state'] = 'add_image'
         return
 
     if state == 'add_price':
@@ -111,7 +123,11 @@ def handle_steps(message):
             return
         elif text == 'Trending':
             trending = 1
-        add_product(data['title'], data['bio'], data['price'], data['image_path'], data['category_id'], discount, trending, uid)
+        elif text == 'None':
+            pass
+        price = data.get('price', 0)
+        contact_link = data.get('contact_link', None)
+        add_product(data['title'], data['bio'], price, data['image_path'], data['category_id'], discount, trending, uid, contact_link)
         bot.reply_to(message, "✅ Product added!")
         del user_states[uid]
         return
@@ -120,7 +136,9 @@ def handle_steps(message):
         try:
             discount = float(message.text.strip())
             trending = user_states[uid]['temp']['trending']
-            add_product(data['title'], data['bio'], data['price'], data['image_path'], data['category_id'], discount, trending, uid)
+            price = data.get('price', 0)
+            contact_link = data.get('contact_link', None)
+            add_product(data['title'], data['bio'], price, data['image_path'], data['category_id'], discount, trending, uid, contact_link)
             bot.reply_to(message, "✅ Product added!")
             del user_states[uid]
         except:
