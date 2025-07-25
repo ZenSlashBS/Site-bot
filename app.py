@@ -76,6 +76,7 @@ HTML_TEMPLATE = '''
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
         .close:hover { color: #fff; cursor: pointer; }
         .no-products { text-align: center; color: #aaa; flex: 1; }
+        .modal-content .badges { position: relative; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 10px; }
     </style>
 </head>
 <body>
