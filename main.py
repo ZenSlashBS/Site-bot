@@ -11,7 +11,7 @@ init_db()
 add_admin(MAIN_ADMIN)
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8080))
     app_url = "https://site-bot-production.up.railway.app"  # Hardcoded subdomain for webhook
     bot.remove_webhook()
     bot.set_webhook(url=app_url + '/webhook')
