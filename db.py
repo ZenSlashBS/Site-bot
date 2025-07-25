@@ -12,13 +12,13 @@ def init_db():
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   title TEXT NOT NULL,
                   bio TEXT NOT NULL,
-                  price REAL DEFAULT NULL,
+                  price REAL NOT NULL,
                   image_path TEXT NOT NULL,
                   category_id INTEGER NOT NULL,
                   created_at TEXT NOT NULL,
                   discount_percent REAL DEFAULT 0,
                   is_trending INTEGER DEFAULT 0,
-                  contact_link TEXT DEFAULT NULL,
+                  contact_link TEXT,
                   FOREIGN KEY (category_id) REFERENCES categories (id))''')
     c.execute('''CREATE TABLE IF NOT EXISTS admins
                  (user_id INTEGER PRIMARY KEY)''')
@@ -65,7 +65,7 @@ def add_product(title, bio, price, image_path, category_id, discount_percent, is
 def get_products():
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
-    c.execute("""SELECT p.*, c.name as category_name FROM products p
+    c.execute("""SELECT p.*, c.name FROM products p
                  JOIN categories c ON p.category_id = c.id
                  ORDER BY c.name, p.id DESC""")
     products = c.fetchall()
