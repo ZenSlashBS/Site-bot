@@ -91,24 +91,26 @@ HTML_TEMPLATE = '''
             100% { opacity: 0.8; box-shadow: 0 0 20px #00ff00; }
         }
         .sparkle {
+            --random-x: 0px;
+            --size: 5px;
             position: fixed;
-            width: 5px;
-            height: 5px;
+            width: var(--size);
+            height: var(--size);
             background: #00ff00;
             border-radius: 50%;
             box-shadow: 0 0 10px #00ff00;
-            animation: sparkle-fall 3s linear infinite;
+            animation: sparkle-fall var(--duration) linear forwards;
             z-index: -1;
         }
         @keyframes sparkle-fall {
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(0, 100vh) scale(0.5); opacity: 0; }
+            100% { transform: translate(var(--random-x), 100vh) scale(0.5); opacity: 0; }
         }
         header {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            padding: 20px;
+            padding: 10px 20px;
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
         }
@@ -135,13 +137,13 @@ HTML_TEMPLATE = '''
         }
         .hero {
             text-align: center;
-            padding: 50px;
+            padding: 50px 20px;
             background: rgba(15,15,15,0.7);
             backdrop-filter: blur(10px);
-            margin: 20px;
-            border-radius: 20px;
+            margin: 0;
+            border-radius: 0;
         }
-        .category { margin-bottom: 40px; display: block; padding: 20px; }
+        .category { margin-bottom: 40px; display: block; padding: 20px 0; }
         .category-name { font-size: 24px; color: #00ffff; padding: 10px 0; width: auto; }
         .carousel { display: flex; overflow-x: auto; scrollbar-width: none; width: 100%; }
         .carousel::-webkit-scrollbar { display: none; }
@@ -279,13 +281,17 @@ HTML_TEMPLATE = '''
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.classList.add('sparkle');
-            sparkle.style.left = (50 + (Math.random() - 0.5) * 100) + '%';
-            sparkle.style.top = (50 + (Math.random() - 0.5) * 100) + '%';
-            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            sparkle.style.left = `calc(50% + ${(Math.random() - 0.5) * 50}px)`;
+            sparkle.style.top = `calc(50% + ${(Math.random() - 0.5) * 50}px)`;
+            const duration = Math.random() * 2 + 2;
+            sparkle.style.setProperty('--duration', duration + 's');
+            sparkle.style.setProperty('--random-x', (Math.random() - 0.5) * 200 + 'px');
+            sparkle.style.setProperty('--size', (Math.random() * 5 + 2) + 'px');
+            sparkle.style.animationDelay = Math.random() * 1 + 's';
             document.body.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 3000);
+            setTimeout(() => sparkle.remove(), duration * 1000);
         }
-        setInterval(createSparkle, 200);
+        setInterval(createSparkle, 300);
     </script>
 </body>
 </html>
