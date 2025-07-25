@@ -98,127 +98,41 @@ HTML_TEMPLATE = '''
       80%  {opacity:0.6;}
       100% {opacity:0.8; box-shadow:0 0 20px #00ff00;}
     }
-    .sparkle {
-      position:fixed;
-      width:5px; height:5px;
-      background:#00ff00;
-      border-radius:50%;
-      box-shadow:0 0 10px #00ff00;
-      animation:sparkle-fall 3s linear infinite;
-      z-index:-1;
-    }
-    @keyframes sparkle-fall {
-      0%   {transform:translate(0,0) scale(1); opacity:1;}
-      100% {transform:translate(0,100vh) scale(0.5); opacity:0;}
-    }
-    header {
-      display:flex; align-items:center;
-      padding:20px;
-      background:rgba(0,0,0,0.5);
-      backdrop-filter:blur(10px);
-    }
-    .logo-container {display:flex; align-items:center;}
+    .sparkle {position:fixed;width:5px;height:5px;background:#00ff00;border-radius:50%;box-shadow:0 0 10px #00ff00;animation:sparkle-fall 3s linear infinite;z-index:-1;}
+    @keyframes sparkle-fall {0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(0,100vh) scale(0.5);opacity:0;}}
+    header {display:flex;align-items:center;padding:20px;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);}
+    .logo-container {display:flex;align-items:center;}
     .logo-img {width:40px;height:40px;border-radius:50%;margin-right:10px;}
-    .logo-text {
-      font-size:24px; color:#00ff00;
-      text-shadow:0 0 10px #00ff00;
-      animation:glow 2s ease infinite;
-    }
-    @keyframes glow {
-      0%   {text-shadow:0 0 5px #00ff00;}
-      50%  {text-shadow:0 0 15px #00ff00;}
-      100% {text-shadow:0 0 5px #00ff00;}
-    }
-    .hero {
-      text-align:center; padding:50px;
-      background:rgba(15,15,15,0.7);
-      backdrop-filter:blur(10px);
-      margin:20px; border-radius:20px;
-    }
-    .category-name {
-      font-size:20px; color:#f5f5f5;
-      background:rgba(255,255,255,0.05);
-      padding:8px 16px; border-radius:12px;
-      display:inline-block; margin-bottom:15px;
-    }
-    .category {margin-bottom:40px;padding:20px;}
+    .logo-text {font-size:24px;color:#00ff00;text-shadow:0 0 10px #00ff00;animation:glow 2s ease infinite;}
+    @keyframes glow {0%{text-shadow:0 0 5px #00ff00;}50%{text-shadow:0 0 15px #00ff00;}100%{text-shadow:0 0 5px #00ff00;}}
+    .hero {text-align:center;padding:50px;background:rgba(15,15,15,0.7);backdrop-filter:blur(10px);margin:20px;border-radius:20px;}
+    .category-name {font-size:20px;color:#f5f5f5;background:rgba(255,255,255,0.05);padding:8px 16px;border-radius:12px;display:inline-block;margin-bottom:15px;}
+    .category {margin-bottom:40px;display:block;padding:20px;}
     .carousel {display:flex;overflow-x:auto;scrollbar-width:none;}
     .carousel::-webkit-scrollbar{display:none;}
-    .card {
-      min-width:250px;margin:10px;
-      background:rgba(31,31,31,0.7);
-      backdrop-filter:blur(10px);
-      border-radius:10px;padding:10px;
-      text-align:center;position:relative;
-      transition:transform .3s;cursor:pointer;
-      display:flex;flex-direction:column;
-      border:1px solid rgba(255,255,255,0.1);
-    }
+    .card {min-width:250px;margin:10px;background:rgba(31,31,31,0.7);backdrop-filter:blur(10px);border-radius:10px;padding:10px;text-align:center;position:relative;transition:transform .3s;cursor:pointer;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,0.1);}
     .card:hover {transform:scale(1.05);box-shadow:0 0 20px rgba(0,255,0,0.3);}
+    .image-container {position:relative;}
     .card img {width:100%;height:200px;object-fit:cover;border-radius:10px;}
-    .creators .card img {
-      border-radius:50%;width:200px;height:200px;margin:0 auto;
-    }
+    .creators .card img {border-radius:50%;width:200px;height:200px;margin:0 auto;}
     .title {font-size:18px;font-weight:bold;margin-top:10px;}
-    .bio {
-      font-size:14px;white-space:pre-wrap;
-      overflow:hidden;text-overflow:ellipsis;
-      max-height:60px;
-    }
+    .bio {font-size:14px;white-space:pre-wrap;overflow:hidden;text-overflow:ellipsis;max-height:60px;}
     .price {font-size:16px;color:#00ff00;margin-bottom:0;}
-    .badges {
-      position:absolute;top:10px;left:10px;
-      display:flex;flex-direction:column;gap:5px;
-    }
+    .badges {position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:5px;}
     .badge {padding:5px 10px;border-radius:5px;font-size:12px;color:#fff;}
     .discount {background:#e74c3c;}
-    .new      {background:#2ecc71;}
-    .trending {
-      background:linear-gradient(45deg,#8e44ad,#3498db,#2ecc71);
-      background-size:300% 300%;animation:rainbow 4s ease infinite;
-    }
-    @keyframes rainbow {
-      0%   {background-position:0% 50%;}
-      50%  {background-position:100% 50%;}
-      100% {background-position:0% 50%;}
-    }
-    .purchase {
-      background:linear-gradient(to right,#00ff00,#00cc00);
-      color:#000;padding:10px;border-radius:5px;
-      text-decoration:none;margin-top:0;
-      transition:box-shadow .3s;
-    }
+    .new {background:#2ecc71;}
+    .trending {background:linear-gradient(45deg,#8e44ad,#3498db,#2ecc71);background-size:300% 300%;animation:rainbow 4s ease infinite;}
+    @keyframes rainbow {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+    .purchase {background:linear-gradient(to right,#00ff00,#00cc00);color:#000;padding:10px;border-radius:5px;text-decoration:none;margin-top:0;transition:box-shadow .3s;}
     .purchase:hover {box-shadow:0 0 10px #00ff00;}
-    .modal {
-      display:none;position:fixed;z-index:1;
-      left:0;top:0;width:100%;height:100%;
-      background-color:rgba(0,0,0,0.4);
-      backdrop-filter:blur(5px);
-    }
-    .modal-content {
-      background:rgba(31,31,31,0.8);
-      backdrop-filter:blur(10px);
-      margin:10% auto; padding:20px;
-      border-radius:20px; max-width:600px;
-      display:flex;flex-direction:column;
-      max-height:80vh; overflow:hidden;
-      position:relative;
-    }
-    .modal-body {
-      overflow-y:auto; flex:1 1 auto;
-      margin-bottom:20px;
-    }
-    .modal-footer {
-      display:flex;flex-direction:column;gap:10px;
-    }
-    .close {
-      position:absolute;top:15px;right:20px;
-      font-size:28px;color:#aaa;cursor:pointer;
-    }
+    .modal {display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.4);backdrop-filter:blur(5px);}
+    .modal-content {background:rgba(31,31,31,0.8);backdrop-filter:blur(10px);margin:10% auto;padding:20px;border-radius:20px;max-width:600px;display:flex;flex-direction:column;max-height:80vh;overflow:hidden;position:relative;}
+    .modal-body {overflow-y:auto;flex:1 1 auto;margin-bottom:20px;}
+    .modal-footer {display:flex;flex-direction:column;gap:10px;}
+    .close {position:absolute;top:15px;right:20px;font-size:28px;color:#aaa;cursor:pointer;}
     .close:hover{color:#fff;}
-    .no-products {
-      text-align:center;color:#aaa;padding:40px 0;
-    }
+    .no-products {text-align:center;color:#aaa;padding:40px 0;}
   </style>
 </head>
 <body>
@@ -243,11 +157,13 @@ HTML_TEMPLATE = '''
           {% for prod in prods %}
             <div class="card"
                  onclick="event.target.closest('.card').querySelector('.purchase')!==event.target&&openModal('{{ prod.id }}')">
-              <img src="{{ prod.image_path }}" alt="{{ prod.title }}">
-              <div class="badges">
-                {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
-                {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
-                {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
+              <div class="image-container">
+                <img src="{{ prod.image_path }}" alt="{{ prod.title }}">
+                <div class="badges">
+                  {% if prod.discount_percent>0 %}<div class="badge discount">{{ prod.discount_percent }}% OFF</div>{% endif %}
+                  {% if prod.is_new %}<div class="badge new">NEW</div>{% endif %}
+                  {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
+                </div>
               </div>
               <div class="title">{{ prod.title }}</div>
               <div class="bio">{{ prod.bio[:100] }}{% if prod.bio|length>100 %}...{% endif %}</div>
@@ -282,8 +198,10 @@ HTML_TEMPLATE = '''
             {% if prod.is_trending %}<div class="badge trending">TRENDING</div>{% endif %}
           </div>
           <h2>{{ prod.title }}</h2>
-          <img src="{{ prod.image_path }}"
-               style="{% if cat=='Creators' %}border-radius:50%;max-width:200px;height:200px;display:block;margin:0 auto;{% endif %}width:100%;">
+          <div class="image-container">
+            <img src="{{ prod.image_path }}"
+                 style="{% if cat=='Creators' %}border-radius:50%;max-width:200px;height:200px;display:block;margin:0 auto;{% endif %}width:100%;">
+          </div>
           <div class="modal-body">
             <p>{{ prod.bio }}</p>
           </div>
