@@ -52,9 +52,9 @@ HTML_TEMPLATE = '''
     <style>
         body { background-color: #0f0f0f; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; }
         h1 { text-align: center; color: #00ff00; }
-        .category { margin-bottom: 40px; display: flex; }
-        .category-name { font-size: 24px; color: #00ffff; position: sticky; left: 0; background: #0f0f0f; padding: 10px; width: 200px; min-width: 200px; display: inline-block; vertical-align: top; }
-        .carousel { display: flex; overflow-x: auto; scrollbar-width: none; flex: 1; }
+        .category { margin-bottom: 40px; display: block; }
+        .category-name { font-size: 24px; color: #00ffff; padding: 10px 0; width: auto; }
+        .carousel { display: flex; overflow-x: auto; scrollbar-width: none; width: 100%; }
         .carousel::-webkit-scrollbar { display: none; }
         .card { min-width: 250px; margin: 10px; background: #1f1f1f; border-radius: 10px; padding: 10px; text-align: center; position: relative; transition: transform 0.3s; cursor: pointer; }
         .card:hover { transform: scale(1.05); }
