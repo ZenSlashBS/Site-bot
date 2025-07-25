@@ -12,12 +12,13 @@ def init_db():
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   title TEXT NOT NULL,
                   bio TEXT NOT NULL,
-                  price REAL NOT NULL,
+                  price REAL DEFAULT NULL,
                   image_path TEXT NOT NULL,
                   category_id INTEGER NOT NULL,
                   created_at TEXT NOT NULL,
                   discount_percent REAL DEFAULT 0,
                   is_trending INTEGER DEFAULT 0,
+                  contact_link TEXT DEFAULT NULL,
                   FOREIGN KEY (category_id) REFERENCES categories (id))''')
     c.execute('''CREATE TABLE IF NOT EXISTS admins
                  (user_id INTEGER PRIMARY KEY)''')
@@ -27,6 +28,7 @@ def init_db():
                   action TEXT NOT NULL,
                   details TEXT,
                   timestamp TEXT NOT NULL)''')
+    c.execute("INSERT OR IGNORE INTO categories (name) VALUES ('Creators')")
     conn.commit()
     conn.close()
 
@@ -49,13 +51,13 @@ def get_categories():
     conn.close()
     return cats
 
-def add_product(title, bio, price, image_path, category_id, discount_percent, is_trending, admin_id):
+def add_product(title, bio, price, image_path, category_id, discount_percent, is_trending, admin_id, contact_link=None):
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
     created_at = datetime.now().isoformat()
-    c.execute("""INSERT INTO products (title, bio, price, image_path, category_id, created_at, discount_percent, is_trending)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-              (title, bio, price, image_path, category_id, created_at, discount_percent, is_trending))
+    c.execute("""INSERT INTO products (title, bio, price, image_path, category_id, created_at, discount_percent, is_trending, contact_link)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+              (title, bio, price, image_path, category_id, created_at, discount_percent, is_trending, contact_link))
     conn.commit()
     conn.close()
     log_action(admin_id, "Added product", title)
