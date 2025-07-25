@@ -48,7 +48,8 @@ HTML_TEMPLATE = '''
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketplace</title>
+    <title>Aarav's Marketplace</title>
+    <link rel="icon" href="https://iili.io/FkCxdk7.jpg" type="image/jpg">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -90,7 +91,7 @@ HTML_TEMPLATE = '''
             100% { opacity: 0.8; box-shadow: 0 0 20px #00ff00; }
         }
         .sparkle {
-            position: absolute;
+            position: fixed;
             width: 5px;
             height: 5px;
             background: #00ff00;
@@ -100,21 +101,37 @@ HTML_TEMPLATE = '''
             z-index: -1;
         }
         @keyframes sparkle-fall {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(0, 100vh) scale(0.5); opacity: 0; }
         }
         header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             padding: 20px;
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
         }
-        nav a {
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .logo-text {
+            font-size: 24px;
             color: #00ff00;
-            text-decoration: none;
-            margin: 0 10px;
+            text-shadow: 0 0 10px #00ff00;
+            animation: glow 2s ease infinite;
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #00ff00; }
+            50% { text-shadow: 0 0 15px #00ff00; }
+            100% { text-shadow: 0 0 5px #00ff00; }
         }
         .hero {
             text-align: center;
@@ -168,19 +185,15 @@ HTML_TEMPLATE = '''
 <body>
     <div class="tube-light"></div>
     <header>
-        <div class="logo">Marketplace</div>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Tools</a>
-            <a href="#">Creators</a>
-            <a href="#">Blog</a>
-        </nav>
+        <div class="logo-container">
+            <img src="https://iili.io/FkCxdk7.jpg" class="logo-img" alt="Logo">
+            <span class="logo-text">Aarav's Marketplace</span>
+        </div>
     </header>
     <section class="hero">
-        <h1>Marketplace for Creators</h1>
-        <p>Discover and buy digital tools from top creators.</p>
+        <h1>Marketplace For The Pro Crackers</h1>
+        <p>Discover And Get The Tool U Need For The Ultimate Hacking Experience.</p>
     </section>
-    <h1>Marketplace</h1>
     {% if grouped %}
     {% for cat, prods in grouped.items() %}
     <div class="category{% if cat == 'Creators' %} creators{% endif %}">
@@ -266,12 +279,13 @@ HTML_TEMPLATE = '''
         function createSparkle() {
             const sparkle = document.createElement('div');
             sparkle.classList.add('sparkle');
-            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.left = (50 + (Math.random() - 0.5) * 100) + '%';
+            sparkle.style.top = (50 + (Math.random() - 0.5) * 100) + '%';
             sparkle.style.animationDelay = Math.random() * 2 + 's';
             document.body.appendChild(sparkle);
             setTimeout(() => sparkle.remove(), 3000);
         }
-        setInterval(createSparkle, 500);
+        setInterval(createSparkle, 200);
     </script>
 </body>
 </html>
