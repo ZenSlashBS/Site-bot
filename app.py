@@ -51,14 +51,99 @@ HTML_TEMPLATE = '''
     <title>Marketplace</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0f0f0f; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; }
-        h1 { text-align: center; color: #00ff00; }
-        .category { margin-bottom: 40px; display: block; }
+        body { 
+            background-color: #0f0f0f; 
+            color: #fff; 
+            font-family: 'Roboto', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-image: radial-gradient(circle at top left, rgba(0,255,0,0.3), transparent 50%), 
+                              radial-gradient(circle at bottom right, rgba(0,255,0,0.3), transparent 50%), 
+                              linear-gradient(to right, #0f0f0f, #001a00); 
+            background-blend-mode: screen;
+            animation: gradient-shift 10s ease infinite;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .tube-light {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 300px;
+            height: 10px;
+            background: #00ff00;
+            box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+            opacity: 0.8;
+            animation: blink-error 2s infinite alternate;
+            z-index: -1;
+        }
+        @keyframes blink-error {
+            0% { opacity: 0.8; box-shadow: 0 0 20px #00ff00; }
+            20% { opacity: 0.4; box-shadow: 0 0 10px #00ff00; }
+            40% { opacity: 0.8; }
+            60% { opacity: 0.2; box-shadow: 0 0 5px #00ff00; }
+            80% { opacity: 0.6; }
+            100% { opacity: 0.8; box-shadow: 0 0 20px #00ff00; }
+        }
+        .sparkle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+            animation: sparkle-fall 3s linear infinite;
+            z-index: -1;
+        }
+        @keyframes sparkle-fall {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+        nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .hero {
+            text-align: center;
+            padding: 50px;
+            background: rgba(15,15,15,0.7);
+            backdrop-filter: blur(10px);
+            margin: 20px;
+            border-radius: 20px;
+        }
+        .category { margin-bottom: 40px; display: block; padding: 20px; }
         .category-name { font-size: 24px; color: #00ffff; padding: 10px 0; width: auto; }
         .carousel { display: flex; overflow-x: auto; scrollbar-width: none; width: 100%; }
         .carousel::-webkit-scrollbar { display: none; }
-        .card { min-width: 250px; margin: 10px; background: #1f1f1f; border-radius: 10px; padding: 10px; text-align: center; position: relative; transition: transform 0.3s; cursor: pointer; display: flex; flex-direction: column; }
-        .card:hover { transform: scale(1.05); }
+        .card { 
+            min-width: 250px; 
+            margin: 10px; 
+            background: rgba(31,31,31,0.7); 
+            backdrop-filter: blur(10px); 
+            border-radius: 10px; 
+            padding: 10px; 
+            text-align: center; 
+            position: relative; 
+            transition: transform 0.3s; 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            border: 1px solid rgba(0,255,0,0.2);
+        }
+        .card:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,255,0,0.5); }
         .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
         .creators .card img { border-radius: 50%; width: 200px; height: 200px; margin: 0 auto; }
         .title { font-size: 18px; font-weight: bold; }
@@ -70,9 +155,10 @@ HTML_TEMPLATE = '''
         .new { background: green; }
         .trending { background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet); background-size: 400% 400%; animation: rainbow 5s ease infinite; color: #fff; }
         @keyframes rainbow { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
-        .purchase { background: #00ff00; color: #000; padding: 10px; border-radius: 5px; text-decoration: none; display: block; margin-top: auto; }
-        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
-        .modal-content { background-color: #1f1f1f; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 600px; }
+        .purchase { background: linear-gradient(to right, #00ff00, #00cc00); color: #000; padding: 10px; border-radius: 5px; text-decoration: none; display: block; margin-top: auto; transition: box-shadow 0.3s; }
+        .purchase:hover { box-shadow: 0 0 10px #00ff00; }
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .modal-content { background: rgba(31,31,31,0.8); backdrop-filter: blur(10px); margin: 15% auto; padding: 20px; border: 1px solid rgba(0,255,0,0.2); width: 80%; max-width: 600px; border-radius: 20px; }
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
         .close:hover { color: #fff; cursor: pointer; }
         .no-products { text-align: center; color: #aaa; flex: 1; }
@@ -80,6 +166,20 @@ HTML_TEMPLATE = '''
     </style>
 </head>
 <body>
+    <div class="tube-light"></div>
+    <header>
+        <div class="logo">Marketplace</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Tools</a>
+            <a href="#">Creators</a>
+            <a href="#">Blog</a>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>Marketplace for Creators</h1>
+        <p>Discover and buy digital tools from top creators.</p>
+    </section>
     <h1>Marketplace</h1>
     {% if grouped %}
     {% for cat, prods in grouped.items() %}
@@ -162,6 +262,16 @@ HTML_TEMPLATE = '''
                 event.target.style.display = 'none';
             }
         }
+        // Add sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 3000);
+        }
+        setInterval(createSparkle, 500);
     </script>
 </body>
 </html>
