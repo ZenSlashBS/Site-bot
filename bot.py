@@ -6,7 +6,6 @@ from db import add_category, get_categories, add_product, get_admins, add_admin,
 
 TOKEN = os.environ['BOT_TOKEN']
 ADMIN_ID = int(os.environ['ADMIN_ID'])  # This is now MAIN_ADMIN
-CHANNEL_ID = int(os.environ['CHANNEL_ID'])
 
 MAIN_ADMIN = ADMIN_ID
 
@@ -83,24 +82,22 @@ def handle_steps(message):
     if state == 'add_price':
         try:
             data['price'] = float(message.text.strip())
-            bot.reply_to(message, "Send the product image as photo:")
+            bot.reply_to(message, "Enter image URL (e.g., https://iili.io/Fkf90xe.jpg):", reply_markup=ForceReply())
             user_states[uid]['state'] = 'add_image'
         except:
             bot.reply_to(message, "❌ Invalid price. Enter number:")
         return
 
     if state == 'add_image':
-        if message.photo:
-            file_id = message.photo[-1].file_id
-            sent_msg = bot.send_photo(CHANNEL_ID, file_id)
-            file_info = bot.get_file(file_id)
-            data['image_path'] = file_info.file_path
+        image_url = message.text.strip()
+        if image_url.startswith('http') and (image_url.endswith('.jpg') or image_url.endswith('.png') or image_url.endswith('.gif')):
+            data['image_path'] = image_url
             markup = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
             markup.add("Discount", "Trending", "Both", "None")
             bot.reply_to(message, "Select tags:", reply_markup=markup)
             user_states[uid]['state'] = 'add_tags'
         else:
-            bot.reply_to(message, "❌ Please send a photo.")
+            bot.reply_to(message, "❌ Invalid image URL. Please enter a valid link ending with .jpg, .png, etc.")
         return
 
     if state == 'add_tags':
