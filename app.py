@@ -3,6 +3,7 @@ from flask import Flask, render_template_string, request, Response
 from db import get_products, init_db
 from datetime import datetime, timedelta
 from bot import bot, TOKEN
+import telebot  # Added this import to fix the NameError
 import os
 import requests
 
