@@ -56,8 +56,8 @@ HTML_TEMPLATE = '''
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Aarav's Marketplace</title>
-  <link rel="icon" href="https://iili.io/FkCxdk7.jpg">
+  <title>HazexPy Shop</title>
+  <link rel="icon" href="https://iili.io/FkiXi6x.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -146,8 +146,8 @@ HTML_TEMPLATE = '''
     </div>
   </header>
   <section class="hero">
-    <h1>Marketplace For The Pro Crackers</h1>
-    <p>Discover And Get The Tool U Need For The Ultimate Hacking Experience.</p>
+    <h1>Shop Source Code</h1>
+    <p>Shop Made by : @SikeNezReborn On Telegram ❤️</p>
   </section>
 
   {% for cat in categories %}
@@ -172,7 +172,7 @@ HTML_TEMPLATE = '''
               {% if cat!='Creators' %}
                 <div class="price">${{ '%.2f' % prod.price }}</div>
                 <a class="purchase"
-                   href="https://t.me/philoxnex?text=Hi%20Im%20interested%20to%20buy%20{{ prod.title|urlencode }}">
+                   href="https://t.me/SikeNezReborn?text=Hi%20Im%20interested%20to%20buy%20{{ prod.title|urlencode }}">
                   Purchase
                 </a>
               {% else %}
@@ -211,7 +211,7 @@ HTML_TEMPLATE = '''
             {% if cat!='Creators' %}
               <div class="price">${{ '%.2f' % prod.price }}</div>
               <a class="purchase"
-                 href="https://t.me/philoxnex?text=Hi%20Im%20interested%20to%20buy%20{{ prod.title|urlencode }}">
+                 href="https://t.me/SikeNezReborn?text=Hi%20Im%20interested%20to%20buy%20{{ prod.title|urlencode }}">
                 Purchase
               </a>
             {% else %}
