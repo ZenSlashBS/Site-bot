@@ -141,7 +141,7 @@ HTML_TEMPLATE = '''
   <div class="tube-light"></div>
   <header>
     <div class="logo-container">
-      <img src="https://iili.io/FkCxdk7.jpg" class="logo-img" alt="Logo">
+      <img src="https://iili.io/FkiMJ71.jpg" class="logo-img" alt="Logo">
       <span class="logo-text">Aarav's Marketplace</span>
     </div>
   </header>
