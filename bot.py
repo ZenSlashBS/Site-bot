@@ -65,36 +65,36 @@ def handle_steps(message):
         cat_id = add_category(name, uid)
         data['category_id'] = cat_id
         data['is_creators'] = name == 'Creators'
-        bot.reply_to(message, "Enter product title:", reply_markup=ForceReply())
+        bot.reply_to(message, "📒 Enter product title:", reply_markup=ForceReply())
         user_states[uid]['state'] = 'add_title'
         return
 
     if state == 'add_title':
         data['title'] = message.text.strip()
-        bot.reply_to(message, "Enter product bio/description:", reply_markup=ForceReply())
+        bot.reply_to(message, "📝 Enter product bio/description:", reply_markup=ForceReply())
         user_states[uid]['state'] = 'add_bio'
         return
 
     if state == 'add_bio':
         data['bio'] = message.text.strip()
         if data.get('is_creators', False):
-            bot.reply_to(message, "Enter contact link:", reply_markup=ForceReply())
+            bot.reply_to(message, "☎️ Enter contact link (e.g : https://t.me/HazexPy):", reply_markup=ForceReply())
             user_states[uid]['state'] = 'add_contact'
         else:
-            bot.reply_to(message, "Enter price (number):", reply_markup=ForceReply())
+            bot.reply_to(message, "🏷️ Enter price (Only number):", reply_markup=ForceReply())
             user_states[uid]['state'] = 'add_price'
         return
 
     if state == 'add_contact':
         data['contact_link'] = message.text.strip()
-        bot.reply_to(message, "Enter image URL (e.g., https://iili.io/Fkf90xe.jpg):", reply_markup=ForceReply())
+        bot.reply_to(message, "🔗 Enter image URL Use This Bot : @HostImg_bot", reply_markup=ForceReply())
         user_states[uid]['state'] = 'add_image'
         return
 
     if state == 'add_price':
         try:
             data['price'] = float(message.text.strip())
-            bot.reply_to(message, "Enter image URL (e.g., https://iili.io/Fkf90xe.jpg):", reply_markup=ForceReply())
+            bot.reply_to(message, "🔗 Enter image URL Use This Bot : @HostImg_bot", reply_markup=ForceReply())
             user_states[uid]['state'] = 'add_image'
         except:
             bot.reply_to(message, "❌ Invalid price. Enter number:")
